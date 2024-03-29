@@ -1,9 +1,7 @@
 package groom.backend.springtricount.member;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,5 +15,11 @@ public class MemberController {
     @GetMapping("/members")
     public List<MemberDto> findAll() {
         return memberService.findAll();
+    }
+
+    @PostMapping("/signup")
+    public MemberDto signup(@RequestBody MemberRequest memberRequest) {
+        MemberDto memberDto = new MemberDto(null, memberRequest.loginId(), memberRequest.name(), memberRequest.password());
+        return memberService.signup(memberDto);
     }
 }

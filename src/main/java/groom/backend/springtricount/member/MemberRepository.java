@@ -24,7 +24,7 @@ public class MemberRepository {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("member")
                 .usingGeneratedKeyColumns("id");
-
+        System.out.println(member);
         Map<String, Object> params = Map.of(
                 "login_id", member.loginId(),
                 "password", member.password(),

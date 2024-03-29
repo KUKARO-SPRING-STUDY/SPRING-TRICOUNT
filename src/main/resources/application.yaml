@@ -1,3 +1,6 @@
+server:
+  port: 9000
+
 spring:
   application:
     name: SPRING-TRICOUNT
@@ -13,7 +16,11 @@ spring:
   sql:
     init:
       mode: always
+  jackson:
+    default-property-inclusion: non_null
 
 logging:
   level:
     org.springframework.jdbc: debug
+
+

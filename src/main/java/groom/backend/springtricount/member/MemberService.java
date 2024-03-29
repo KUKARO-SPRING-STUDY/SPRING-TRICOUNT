@@ -12,7 +12,6 @@ public class MemberService {
 
     public List<MemberDto> findAll() {
         return memberRepository.findAll()
-                .orElse(List.of())
                 .stream()
                 .map(memberEntity -> new MemberDto(memberEntity.id(), memberEntity.loginId(), memberEntity.name()))
                 .toList();

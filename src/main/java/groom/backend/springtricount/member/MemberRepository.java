@@ -2,6 +2,7 @@ package groom.backend.springtricount.member;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.apache.el.stream.Stream;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -16,15 +17,11 @@ import java.util.*;
 public class MemberRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    @PostConstruct
-    public void init() {
-    }
-
     public MemberEntity save(MemberEntity member) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("member")
                 .usingGeneratedKeyColumns("id");
-        System.out.println(member);
+
         Map<String, Object> params = Map.of(
                 "login_id", member.loginId(),
                 "password", member.password(),
@@ -41,6 +38,16 @@ public class MemberRepository {
                 .stream()
                 .filter(Objects::nonNull)
                 .toList();
+    }
+
+    public Optional<MemberEntity> findById(Long id) {
+        List<MemberEntity> result = jdbcTemplate.query("SELECT * FROM member WHERE id = ?", this::memberRowMapper, id);
+        return result.stream().findAny();
+    }
+
+    public Optional<MemberEntity> findByLoginId(String loginId) {
+        List<MemberEntity> result = jdbcTemplate.query("SELECT * FROM member WHERE login_id = ?", this::memberRowMapper, loginId);
+        return result.stream().findAny();
     }
 
     private MemberEntity memberRowMapper(ResultSet rs, int rowNum) {

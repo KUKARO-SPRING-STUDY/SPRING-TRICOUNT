@@ -22,4 +22,11 @@ public class MemberService {
                 .map(memberEntity -> new MemberDto(memberEntity.id(), memberEntity.loginId(), memberEntity.name(), null))
                 .toList();
     }
+
+    public MemberDto login(String loginId, String password) {
+        MemberEntity member = memberRepository.findByLoginId(loginId)
+                .filter(m -> m.password().equals(password))
+                .orElseThrow(() -> new RuntimeException("Member info is not found!"));
+        return new MemberDto(member.id(), member.loginId(), member.name(), null);
+    }
 }

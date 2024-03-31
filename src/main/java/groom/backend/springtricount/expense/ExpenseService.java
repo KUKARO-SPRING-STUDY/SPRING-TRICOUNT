@@ -1,6 +1,7 @@
 package groom.backend.springtricount.expense;
 
 import groom.backend.springtricount.member.MemberDto;
+import groom.backend.springtricount.member.MemberEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,8 @@ public class ExpenseService {
     }
 
     public List<ExpenseDto> findAll(MemberDto memberDto) {
-        return expenseRepository.findAll(memberDto)
+        MemberEntity member = new MemberEntity(memberDto.id(), memberDto.loginId(), memberDto.name(), null);
+        return expenseRepository.findAll(member)
                 .stream()
                 .map(expenseEntity -> new ExpenseDto(
                         expenseEntity.id(),
@@ -33,7 +35,8 @@ public class ExpenseService {
     }
 
     public List<ExpenseDto> findAllBySettlementId(MemberDto memberDto, Long settlementId) {
-        return expenseRepository.findAllBySettlementId(memberDto, settlementId)
+        MemberEntity member = new MemberEntity(memberDto.id(), memberDto.loginId(), memberDto.name(), null);
+        return expenseRepository.findAllBySettlementId(member, settlementId)
                 .stream()
                 .map(expenseEntity -> new ExpenseDto(
                         expenseEntity.id(),

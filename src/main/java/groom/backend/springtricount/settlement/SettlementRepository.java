@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -39,6 +40,31 @@ public class SettlementRepository {
                                         this::mergeMemberEntityBySettlementEntity
                                 )))
                 .values().stream().toList();
+    }
+
+    public Optional<SettlementEntity> findById(Long id) {
+        return jdbcTemplate.query("""
+                                select s.id       as settlement_id,
+                                       s.name     as settlement_name,
+                                       m.id       as member_id,
+                                       m.login_id as member_login_id,
+                                       m.name     as member_name
+                                from settlement_participant sp
+                                         join settlement s on s.id = sp.settlement_id
+                                         join member m on sp.member_id = m.id
+                                where s.id = ?
+                                """,
+                this::settlementByMemberIdRowMapper,
+                id
+        ).stream().filter(Objects::nonNull)
+                .collect(
+                        Collectors.groupingBy(
+                                SettlementEntity::id,
+                                Collectors.collectingAndThen(
+                                        Collectors.toList(),
+                                        this::mergeMemberEntityBySettlementEntity
+                                )))
+                .values().stream().findFirst();
     }
 
     /**

@@ -43,10 +43,11 @@ public class MemberController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
+            HttpServletRequest request,
             @Login MemberDto member
     ) {
-        System.out.println(member);
-        //request.getSession().invalidate(); //세션에 있는 데이터를 모두 지워버림
+        HttpSession session = request.getSession(false);
+        session.invalidate();
         return ResponseEntity.ok().build();
     }
 }

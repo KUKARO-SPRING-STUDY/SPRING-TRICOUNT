@@ -21,7 +21,7 @@ public class ExpenseRepository {
         return null;
     }
 
-    public List<ExpenseEntity> findAll(MemberDto memberDto) {
+    public List<ExpenseEntity> findAll(MemberEntity member) {
         return jdbcTemplate.query("""
                         select e.id                as expense_id,
                                e.name              as expense_name,
@@ -34,13 +34,13 @@ public class ExpenseRepository {
                         from expense e
                         inner join member m on e.payer_member_id = m.id
                         where e.payer_member_id = ?;
-                        """, this::expenseRowMapper, memberDto.id())
+                        """, this::expenseRowMapper, member.id())
                 .stream()
                 .filter(Objects::nonNull)
                 .toList();
     }
 
-    public List<ExpenseEntity> findAllBySettlementId(MemberDto memberDto, Long settlementId) {
+    public List<ExpenseEntity> findAllBySettlementId(MemberEntity member, Long settlementId) {
         return jdbcTemplate.query("""
                         select e.id                as expense_id,
                                e.name              as expense_name,
@@ -54,7 +54,7 @@ public class ExpenseRepository {
                         inner join member m on e.payer_member_id = m.id
                         where e.payer_member_id = ?
                         and e.settlement_id = ?;
-                        """, this::expenseRowMapper, memberDto.id(), settlementId)
+                        """, this::expenseRowMapper, member.id(), settlementId)
                 .stream()
                 .filter(Objects::nonNull)
                 .toList();

@@ -48,8 +48,7 @@ public class SettlementRepository {
      */
     private SettlementEntity mergeMemberEntityBySettlementEntity(List<SettlementEntity> list) {
         SettlementEntity settlement = list.getFirst();
-        List<MemberEntity> participants = new ArrayList<>();
-        list.forEach(s -> participants.addAll(s.participants()));
+        List<MemberEntity> participants = list.stream().flatMap(s -> s.participants().stream()).toList();
         return new SettlementEntity(settlement.id(), settlement.name(), participants);
     }
 

@@ -1,6 +1,5 @@
 package groom.backend.springtricount.settlement;
 
-import groom.backend.springtricount.expense.ExpenseEntity;
 import groom.backend.springtricount.member.MemberEntity;
 
 import java.util.List;

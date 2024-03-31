@@ -1,5 +1,6 @@
 package groom.backend.springtricount.settlement;
 
+import groom.backend.springtricount.expense.ExpenseService;
 import groom.backend.springtricount.member.MemberDto;
 import groom.backend.springtricount.member.MemberEntity;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SettlementService {
     private final SettlementRepository settlementRepository;
+    private final ExpenseService expenseRepository;
 
     public List<SettlementDto> findAll(MemberDto member) {
         MemberEntity memberEntity = new MemberEntity(member.id(), member.loginId(), member.name(), null);
-        return settlementRepository.findAll(memberEntity)
+        return settlementRepository.findAllByMemberId(memberEntity)
                 .stream().map(settlementEntity -> new SettlementDto(
                         settlementEntity.id(),
                         settlementEntity.name(),

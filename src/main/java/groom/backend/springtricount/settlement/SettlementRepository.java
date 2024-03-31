@@ -1,6 +1,5 @@
 package groom.backend.springtricount.settlement;
 
-import groom.backend.springtricount.member.MemberDto;
 import groom.backend.springtricount.member.MemberEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 public class SettlementRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public List<SettlementEntity> findAll(MemberEntity member) {
+    public List<SettlementEntity> findAllByMemberId(MemberEntity member) {
         return jdbcTemplate.query("""
                                 select s.id       as settlement_id,
                                        s.name     as settlement_name,
@@ -29,7 +28,7 @@ public class SettlementRepository {
                                          join settlement s on s.id = sp.settlement_id
                                          join member m on sp.member_id = m.id
                                 """,
-                        this::settlementRowMapper,
+                        this::settlementByMemberIdRowMapper,
                         member.id()
                 ).stream().filter(Objects::nonNull)
                 .collect(
@@ -47,11 +46,13 @@ public class SettlementRepository {
      */
     private SettlementEntity mergeMemberEntityBySettlementEntity(List<SettlementEntity> list) {
         SettlementEntity settlement = list.getFirst();
-        List<MemberEntity> participants = list.stream().flatMap(s -> s.participants().stream()).toList();
+        List<MemberEntity> participants = list.stream()
+                .flatMap(s -> s.participants().stream())
+                .toList();
         return new SettlementEntity(settlement.id(), settlement.name(), participants);
     }
 
-    private SettlementEntity settlementRowMapper(ResultSet rs, int rowNum) {
+    private SettlementEntity settlementByMemberIdRowMapper(ResultSet rs, int rowNum) {
         try {
             return new SettlementEntity(
                     rs.getLong("settlement_id"),

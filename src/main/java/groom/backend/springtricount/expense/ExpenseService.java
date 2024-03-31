@@ -10,6 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
+
     public ExpenseDto save(ExpenseDto expenseDto) {
         return expenseRepository.save(expenseDto);
     }
@@ -21,7 +22,11 @@ public class ExpenseService {
                         expenseEntity.id(),
                         expenseEntity.name(),
                         expenseEntity.settlementId(),
-                        expenseEntity.payerMemberId(),
+                        new MemberDto(
+                                expenseEntity.payerMember().id(),
+                                expenseEntity.payerMember().loginId(),
+                                expenseEntity.payerMember().name(),
+                                null),
                         expenseEntity.amount(),
                         expenseEntity.expenseDateTime()))
                 .toList();

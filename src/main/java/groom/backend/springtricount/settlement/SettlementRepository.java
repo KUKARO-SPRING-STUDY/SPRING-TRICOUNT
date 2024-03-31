@@ -42,6 +42,33 @@ public class SettlementRepository {
                 .values().stream().toList();
     }
 
+    public Optional<SettlementEntity> findByMemberId(MemberEntity member, Long id) {
+        return jdbcTemplate.query("""
+                                select s.id       as settlement_id,
+                                       s.name     as settlement_name,
+                                       m.id       as member_id,
+                                       m.login_id as member_login_id,
+                                       m.name     as member_name
+                                from (select * from settlement_participant where member_id = ?) spm
+                                         join settlement_participant sp on spm.settlement_id = sp.settlement_id
+                                         join settlement s on s.id = sp.settlement_id
+                                         join member m on sp.member_id = m.id
+                                where s.id = ?
+                                """,
+                        this::settlementByMemberIdRowMapper,
+                        member.id(),
+                id
+                ).stream().filter(Objects::nonNull)
+                .collect(
+                        Collectors.groupingBy(
+                                SettlementEntity::id,
+                                Collectors.collectingAndThen(
+                                        Collectors.toList(),
+                                        this::mergeMemberEntityBySettlementEntity
+                                )))
+                .values().stream().findFirst();
+    }
+
     public Optional<SettlementEntity> findById(Long id) {
         return jdbcTemplate.query("""
                                 select s.id       as settlement_id,

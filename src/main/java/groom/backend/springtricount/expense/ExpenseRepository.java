@@ -40,6 +40,25 @@ public class ExpenseRepository {
                 .toList();
     }
 
+    public List<ExpenseEntity> findAllBySettlementId(Long settlementId) {
+        return jdbcTemplate.query("""
+                        select e.id                as expense_id,
+                               e.name              as expense_name,
+                               e.amount            as expense_amount,
+                               e.settlement_id     as expense_settlement_id,
+                               e.expense_date_time as expense_expense_date_time,
+                               m.id                as member_id,
+                               m.login_id          as member_login_id,
+                               m.name              as member_name
+                        from expense e
+                        inner join member m on e.payer_member_id = m.id
+                        and e.settlement_id = ?;
+                        """, this::expenseRowMapper, settlementId)
+                .stream()
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
     public List<ExpenseEntity> findAllBySettlementId(MemberEntity member, Long settlementId) {
         return jdbcTemplate.query("""
                         select e.id                as expense_id,

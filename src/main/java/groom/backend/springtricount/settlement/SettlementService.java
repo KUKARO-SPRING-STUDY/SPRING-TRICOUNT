@@ -24,7 +24,7 @@ public class SettlementService {
 
     public SettlementDto findById(MemberDto memberDto, Long id) {
         MemberEntity member = new MemberEntity(memberDto.id(), memberDto.loginId(), memberDto.name(), null);
-        return settlementRepository.findById(id)
+        return settlementRepository.findByMemberId(member,id)
                 .map(settlement -> getSettlementDto(settlement, member))
                 .orElse(null);
     }
@@ -39,7 +39,7 @@ public class SettlementService {
                         participantEntity.name(),
                         null
                 )).toList(),
-                expenseRepository.findAllBySettlementId(member, settlementEntity.id()).stream()
+                expenseRepository.findAllBySettlementId(settlementEntity.id()).stream()
                         .map(expenseEntity -> new ExpenseDto(
                                 expenseEntity.id(),
                                 expenseEntity.name(),

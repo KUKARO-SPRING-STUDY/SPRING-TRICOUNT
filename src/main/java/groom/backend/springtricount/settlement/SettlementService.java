@@ -26,7 +26,7 @@ public class SettlementService {
                                 participantEntity.name(),
                                 null
                         )).toList(),
-                        List.of()
+                        expenseRepository.findAllBySettlementId(member, settlementEntity.id())
                 )).toList();
     }
 }

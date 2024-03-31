@@ -31,4 +31,21 @@ public class ExpenseService {
                         expenseEntity.expenseDateTime()))
                 .toList();
     }
+
+    public List<ExpenseDto> findAllBySettlementId(MemberDto memberDto, Long settlementId) {
+        return expenseRepository.findAllBySettlementId(memberDto, settlementId)
+                .stream()
+                .map(expenseEntity -> new ExpenseDto(
+                        expenseEntity.id(),
+                        expenseEntity.name(),
+                        expenseEntity.settlementId(),
+                        new MemberDto(
+                                expenseEntity.payerMember().id(),
+                                expenseEntity.payerMember().loginId(),
+                                expenseEntity.payerMember().name(),
+                                null),
+                        expenseEntity.amount(),
+                        expenseEntity.expenseDateTime()))
+                .toList();
+    }
 }

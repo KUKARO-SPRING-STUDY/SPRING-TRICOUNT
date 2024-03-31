@@ -5,10 +5,12 @@ import groom.backend.springtricount.expense.ExpenseRepository;
 import groom.backend.springtricount.member.MemberDto;
 import groom.backend.springtricount.member.MemberEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SettlementService {
@@ -24,7 +26,7 @@ public class SettlementService {
 
     public SettlementDto findById(MemberDto memberDto, Long id) {
         MemberEntity member = new MemberEntity(memberDto.id(), memberDto.loginId(), memberDto.name(), null);
-        return settlementRepository.findByMemberId(member,id)
+        return settlementRepository.findByMemberId(member, id)
                 .map(settlement -> getSettlementDto(settlement, member))
                 .orElse(null);
     }

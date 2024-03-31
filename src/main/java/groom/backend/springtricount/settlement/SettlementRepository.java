@@ -31,7 +31,8 @@ public class SettlementRepository {
                                 """,
                         this::settlementByMemberIdRowMapper,
                         member.id()
-                ).stream().filter(Objects::nonNull)
+                ).stream()
+                .filter(Objects::nonNull)
                 .collect(
                         Collectors.groupingBy(
                                 SettlementEntity::id,
@@ -57,8 +58,9 @@ public class SettlementRepository {
                                 """,
                         this::settlementByMemberIdRowMapper,
                         member.id(),
-                id
-                ).stream().filter(Objects::nonNull)
+                        id
+                ).stream()
+                .filter(Objects::nonNull)
                 .collect(
                         Collectors.groupingBy(
                                 SettlementEntity::id,
@@ -81,9 +83,10 @@ public class SettlementRepository {
                                          join member m on sp.member_id = m.id
                                 where s.id = ?
                                 """,
-                this::settlementByMemberIdRowMapper,
-                id
-        ).stream().filter(Objects::nonNull)
+                        this::settlementByMemberIdRowMapper,
+                        id
+                ).stream()
+                .filter(Objects::nonNull)
                 .collect(
                         Collectors.groupingBy(
                                 SettlementEntity::id,

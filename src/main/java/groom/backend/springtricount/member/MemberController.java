@@ -4,14 +4,12 @@ import groom.backend.springtricount.annotation.Login;
 import groom.backend.springtricount.member.request.LoginRequest;
 import groom.backend.springtricount.member.request.SignupRequest;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController

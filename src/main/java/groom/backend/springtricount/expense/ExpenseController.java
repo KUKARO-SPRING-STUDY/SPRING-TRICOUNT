@@ -24,7 +24,7 @@ public class ExpenseController {
                 expenseRequest.amount(),
                 LocalDateTime.now()
         );
-        return expenseService.save(memberDto, expenseDto);
+        return expenseService.save(expenseDto);
     }
 
     @GetMapping("")

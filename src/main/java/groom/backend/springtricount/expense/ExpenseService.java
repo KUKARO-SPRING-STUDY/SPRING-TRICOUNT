@@ -12,7 +12,7 @@ import java.util.List;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
 
-    public ExpenseDto save(MemberDto memberDto, ExpenseDto expenseDto) {
+    public ExpenseDto save(ExpenseDto expenseDto) {
         ExpenseEntity expenseEntity = new ExpenseEntity(
                 expenseDto.id(),
                 expenseDto.name(),

@@ -73,4 +73,23 @@ public class ExpenseService {
                         expenseEntity.expenseDateTime()))
                 .toList();
     }
+
+    public List<ExpenseDto> delete(MemberDto memberDto, Long id) {
+        MemberEntity member = new MemberEntity(memberDto.id(), memberDto.loginId(), memberDto.name(), null);
+        expenseRepository.delete(member, id);
+        return expenseRepository.findAll(member)
+                .stream()
+                .map(expenseEntity -> new ExpenseDto(
+                        expenseEntity.id(),
+                        expenseEntity.name(),
+                        expenseEntity.settlementId(),
+                        new MemberDto(
+                                expenseEntity.payerMember().id(),
+                                expenseEntity.payerMember().loginId(),
+                                expenseEntity.payerMember().name(),
+                                null),
+                        expenseEntity.amount(),
+                        expenseEntity.expenseDateTime()))
+                .toList();
+    }
 }

@@ -14,6 +14,11 @@ import java.util.List;
 public class ExpenseController {
     private final ExpenseService expenseService;
 
+    @GetMapping("")
+    public List<ExpenseDto> findAll(@Login MemberDto memberDto) {
+        return expenseService.findAll(memberDto);
+    }
+
     @PostMapping("")
     public ExpenseDto create(@Login MemberDto memberDto, @RequestBody ExpenseRequest expenseRequest) {
         ExpenseDto expenseDto = new ExpenseDto(
@@ -27,8 +32,8 @@ public class ExpenseController {
         return expenseService.save(expenseDto);
     }
 
-    @GetMapping("")
-    public List<ExpenseDto> findAll(@Login MemberDto memberDto) {
-        return expenseService.findAll(memberDto);
+    @DeleteMapping("/{id}")
+    public List<ExpenseDto> delete(@Login MemberDto memberDto, @PathVariable("id") Long id) {
+        return expenseService.delete(memberDto, id);
     }
 }

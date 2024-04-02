@@ -133,6 +133,11 @@ public class SettlementRepository {
                 id, member.id());
         return findById(id);
     }
+
+    public void removeParticipant(MemberDto member, Long id) {
+        jdbcTemplate.update("DELETE FROM settlement_participant WHERE settlement_id = ? AND member_id = ?",
+                id, member.id());
+    }
 }
 
 

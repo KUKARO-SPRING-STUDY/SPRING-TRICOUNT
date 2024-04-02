@@ -27,4 +27,9 @@ public class SettlementController {
     public SettlementDto addParticipant(@PathVariable("id") Long id, @Login MemberDto member){
         return settlementService.addParticipant(member, id);
     }
+
+    @DeleteMapping("/{id}/participants")
+    public SettlementDto removeParticipant(@PathVariable("id") Long id, @Login MemberDto member){
+        return settlementService.removeParticipant(member, id);
+    }
 }

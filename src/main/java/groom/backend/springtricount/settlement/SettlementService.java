@@ -62,4 +62,11 @@ public class SettlementService {
                 .map(settlement -> getSettlementDto(settlement, new MemberEntity(member.id(), member.loginId(), member.name(), null)))
                 .orElse(null);
     }
+
+    public SettlementDto removeParticipant(MemberDto member, Long id) {
+        settlementRepository.removeParticipant(member, id);
+        return settlementRepository.findById(id)
+                .map(settlement -> getSettlementDto(settlement, new MemberEntity(member.id(), member.loginId(), member.name(), null)))
+                .orElse(null);
+    }
 }

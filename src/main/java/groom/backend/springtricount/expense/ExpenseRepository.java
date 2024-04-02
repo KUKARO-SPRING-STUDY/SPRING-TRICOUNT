@@ -125,4 +125,8 @@ public class ExpenseRepository {
                 .toLocalDate()
                 .atTime(rs.getTime("expense_expense_date_time").toLocalTime());
     }
+
+    public void delete(MemberEntity member, Long id) {
+        jdbcTemplate.update("delete from expense where id = ? and payer_member_id = ?", id, member.id());
+    }
 }

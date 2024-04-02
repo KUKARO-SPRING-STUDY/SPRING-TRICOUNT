@@ -34,3 +34,14 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+/**
+ * 이 설정으로 실행할 수 있다.
+ */
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'groom.backend.springtricount.SpringTricountApplication'
+        )
+    }
+}

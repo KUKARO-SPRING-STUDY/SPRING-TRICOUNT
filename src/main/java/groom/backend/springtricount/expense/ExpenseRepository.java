@@ -4,12 +4,14 @@ import groom.backend.springtricount.member.MemberDto;
 import groom.backend.springtricount.member.MemberEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Repository
@@ -17,8 +19,28 @@ import java.util.Objects;
 public class ExpenseRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public ExpenseDto save(ExpenseDto expenseDto) {
-        return null;
+    public ExpenseEntity save(ExpenseEntity expenseEntity) {
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("expense")
+                .usingGeneratedKeyColumns("id");
+
+        Map<String, Object> params = Map.of(
+                "name", expenseEntity.name(),
+                "settlement_id", expenseEntity.settlementId(),
+                "payer_member_id", expenseEntity.payerMember().id(),
+                "amount", expenseEntity.amount(),
+                "expense_date_time", expenseEntity.expenseDateTime()
+        );
+
+        Number key = simpleJdbcInsert.executeAndReturnKey(params);
+
+        return new ExpenseEntity(
+                key.longValue(),
+                expenseEntity.name(),
+                expenseEntity.settlementId(),
+                expenseEntity.payerMember(),
+                expenseEntity.amount(),
+                expenseEntity.expenseDateTime());
     }
 
     public List<ExpenseEntity> findAll(MemberEntity member) {

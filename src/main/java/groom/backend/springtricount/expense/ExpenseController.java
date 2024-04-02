@@ -3,11 +3,9 @@ package groom.backend.springtricount.expense;
 import groom.backend.springtricount.annotation.Login;
 import groom.backend.springtricount.member.MemberDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -17,8 +15,16 @@ public class ExpenseController {
     private final ExpenseService expenseService;
 
     @PostMapping("")
-    public ExpenseDto create(@Login MemberDto memberDto, ExpenseDto expenseDto) {
-        return expenseService.save(expenseDto);
+    public ExpenseDto create(@Login MemberDto memberDto, @RequestBody ExpenseRequest expenseRequest) {
+        ExpenseDto expenseDto = new ExpenseDto(
+                null,
+                expenseRequest.name(),
+                expenseRequest.settlementId(),
+                memberDto,
+                expenseRequest.amount(),
+                LocalDateTime.now()
+        );
+        return expenseService.save(memberDto, expenseDto);
     }
 
     @GetMapping("")

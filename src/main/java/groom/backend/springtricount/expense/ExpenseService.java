@@ -12,8 +12,30 @@ import java.util.List;
 public class ExpenseService {
     private final ExpenseRepository expenseRepository;
 
-    public ExpenseDto save(ExpenseDto expenseDto) {
-        return expenseRepository.save(expenseDto);
+    public ExpenseDto save(MemberDto memberDto, ExpenseDto expenseDto) {
+        ExpenseEntity expenseEntity = new ExpenseEntity(
+                expenseDto.id(),
+                expenseDto.name(),
+                expenseDto.settlementId(),
+                new MemberEntity(
+                        expenseDto.payerMember().id(),
+                        expenseDto.payerMember().loginId(),
+                        expenseDto.payerMember().name(),
+                        null),
+                expenseDto.amount(),
+                expenseDto.expenseDateTime());
+        ExpenseEntity newExpense = expenseRepository.save(expenseEntity);
+        return new ExpenseDto(
+                newExpense.id(),
+                newExpense.name(),
+                newExpense.settlementId(),
+                new MemberDto(
+                        newExpense.payerMember().id(),
+                        newExpense.payerMember().loginId(),
+                        newExpense.payerMember().name(),
+                        null),
+                newExpense.amount(),
+                newExpense.expenseDateTime());
     }
 
     public List<ExpenseDto> findAll(MemberDto memberDto) {

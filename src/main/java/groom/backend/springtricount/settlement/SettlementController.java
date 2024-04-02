@@ -3,10 +3,7 @@ package groom.backend.springtricount.settlement;
 import groom.backend.springtricount.annotation.Login;
 import groom.backend.springtricount.member.MemberDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,10 @@ public class SettlementController {
     @GetMapping("/{id}")
     public SettlementDto getOne(@PathVariable("id") Long id, @Login MemberDto member){
         return settlementService.findById(member, id);
+    }
+
+    @PostMapping("/{id}/participants")
+    public SettlementDto addParticipant(@PathVariable("id") Long id, @Login MemberDto member){
+        return settlementService.addParticipant(member, id);
     }
 }

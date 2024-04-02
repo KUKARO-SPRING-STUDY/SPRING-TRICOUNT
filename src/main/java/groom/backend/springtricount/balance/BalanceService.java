@@ -30,6 +30,8 @@ public class BalanceService {
 
         BigDecimal totalAmount = getTotalAmount(expenses);
         BigDecimal averageAmount = totalAmount.divide(BigDecimal.valueOf(participants.size()), RoundingMode.DOWN);
+        System.out.println("totalAmount = " + totalAmount);
+        System.out.println("averageAmount = " + averageAmount);
 
         Map<MemberDto, BigDecimal> memberExpenseMap = getMemberExpenseMap(expenses);
         Map<MemberDto, BigDecimal> memberAmountMap = getMemberAmountMap(participants, memberExpenseMap, averageAmount);
@@ -43,6 +45,8 @@ public class BalanceService {
                 memberAmountMap,
                 entry -> entry.getValue().compareTo(BigDecimal.ZERO) < 0,
                 Comparator.comparing(MemberBigDecimal::amount).reversed());
+        System.out.println("receiver = " + receiver);
+        System.out.println("sender = " + sender);
 
         return getBalances(receiver, sender);
     }

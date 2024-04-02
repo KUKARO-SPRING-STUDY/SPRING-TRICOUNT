@@ -1,10 +1,13 @@
 package groom.backend.springtricount.settlement;
 
+import groom.backend.springtricount.member.MemberDto;
 import groom.backend.springtricount.member.MemberEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
+import java.nio.channels.FileChannel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -123,6 +126,12 @@ public class SettlementRepository {
         } catch (SQLException e) {
             return null;
         }
+    }
+
+    public Optional<SettlementEntity> addParticipant(MemberDto member, Long id) {
+        jdbcTemplate.update("INSERT INTO settlement_participant (settlement_id, member_id) VALUES (?, ?)",
+                id, member.id());
+        return findById(id);
     }
 }
 

@@ -57,4 +57,9 @@ public class SettlementService {
                         )).toList());
     }
 
+    public SettlementDto addParticipant(MemberDto member, Long id) {
+        return settlementRepository.addParticipant(member, id)
+                .map(settlement -> getSettlementDto(settlement, new MemberEntity(member.id(), member.loginId(), member.name(), null)))
+                .orElse(null);
+    }
 }
